@@ -13,8 +13,9 @@ object WashRoomApiClient {
 
     private val api: WashRoomApi
 
+    //todo fix api
     fun updateRoom(name: String, vacant: Boolean): Completable {
-        return api.updateRoom(name, vacant, BuildConfig.WASHROOM_PASSWORD)
+        return api.updateRoom(name, if (vacant) "Vacant" else "In Use", BuildConfig.WASHROOM_PASSWORD)
                 .subscribeOn(Schedulers.io())
     }
 

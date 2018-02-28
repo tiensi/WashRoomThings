@@ -22,7 +22,7 @@ android {
     }
 
     defaultConfig {
-        buildConfigField "String", "WASHROOM_URL", "\"TODO\""
+        buildConfigField "String", "WASHROOM_URL", "\"http://tiensinowashroom.herokuapp.com/\""
         buildConfigField "String", "WASHROOM_PASSWORD", "\"TODO\""
     }
 }

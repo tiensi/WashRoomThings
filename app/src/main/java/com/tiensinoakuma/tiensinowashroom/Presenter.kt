@@ -6,7 +6,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 /**
  * Business logic (None Android System related)
  */
-class Presenter(private val api: WashRoomApiClient) {
+class Presenter(private val api: WashRoomApiClient, private val view: View) {
 
     val DOOR_CLOSED_TOO_SOON: Long = 1000
     val DOOR_OPENED_TOO_LONG: Long = 10000
@@ -34,11 +34,13 @@ class Presenter(private val api: WashRoomApiClient) {
                 if (isValidTimeFrame(roomStateMap[switchChange.name]!!.lastUpdated)) {
                     //todo Notify that the room state has changed
                     roomStateMap[switchChange.name]!!.vacant = !roomStateMap[switchChange.name]!!.vacant
+                    view.setRoomAvailable(roomStateMap[switchChange.name]!!.vacant)
                     api.updateRoom(switchChange.name, roomStateMap[switchChange.name]!!.vacant)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
                                 //Success!
                             }, { error -> Log.w("error", error) })
+
                 }
             }
             //Todo kick off alarm manager to reset every 20 minutes as a fail safe

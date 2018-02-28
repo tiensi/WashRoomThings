@@ -6,8 +6,8 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WashRoomApi {
-    @PUT("room/{name}")
+    @PUT("washroom/{name}")
     fun updateRoom(@Path("name") name: String,
-                   @Query("vacant") vacant: Boolean,
+                   @Query("status") status: String,
                    @Query("password") password: String): Completable
 }
