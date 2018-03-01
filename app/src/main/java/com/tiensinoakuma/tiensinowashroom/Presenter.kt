@@ -35,7 +35,24 @@ class Presenter(private val api: WashRoomApiClient, private val view: View) {
                     //todo Notify that the room state has changed
                     roomStateMap[switchChange.name]!!.vacant = !roomStateMap[switchChange.name]!!.vacant
                     view.setRoomAvailable(roomStateMap[switchChange.name]!!.vacant)
-                    api.updateRoom(switchChange.name, roomStateMap[switchChange.name]!!.vacant)
+                    //todo uncomment and fix this after demo
+//                    api.updateRoom(switchChange.name, roomStateMap[switchChange.name]!!.vacant)
+                    api.updateRoom("argh", "argh", roomStateMap[switchChange.name]!!.vacant)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                //Success!
+                            }, { error -> Log.w("error", error) })
+                    api.updateRoom("test", "test", roomStateMap[switchChange.name]!!.vacant)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                //Success!
+                            }, { error -> Log.w("error", error) })
+                    api.updateRoom("what", "what", roomStateMap[switchChange.name]!!.vacant)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe({
+                                //Success!
+                            }, { error -> Log.w("error", error) })
+                    api.updateRoom("t49", "unisex", roomStateMap[switchChange.name]!!.vacant)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe({
                                 //Success!
