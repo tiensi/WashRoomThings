@@ -7,7 +7,7 @@ The purpose of this project was to detect when a room was being used and update 
 ![Imgur Image](https://i.imgur.com/8V7lHhW.jpg)
 
 * In Action
-
+[Imgur](https://i.imgur.com/jEbgD7z.gifv)
 
 * Rails website
 ![Imgur Image](https://i.imgur.com/lvYmIp4.png)
