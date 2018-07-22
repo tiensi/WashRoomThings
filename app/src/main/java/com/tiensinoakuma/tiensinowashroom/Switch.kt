@@ -12,12 +12,10 @@ class Switch(val name: String, val gpio: Gpio) {
 
     init {
         switchSubject.toSerialized()
-        callback = object : GpioCallback() {
-            override fun onGpioEdge(gpio: Gpio): Boolean {
-                Log.e("What state", gpio.value.toString())
-                switchSubject.onNext(SwitchChange(gpio.value, name))
-                return true
-            }
+        callback = GpioCallback { gpio ->
+            Log.d("Amenity is vacant", gpio.value.toString())
+            switchSubject.onNext(SwitchChange(gpio.value, name))
+            true
         }
         gpio.setDirection(Gpio.DIRECTION_IN)
         gpio.setActiveType(Gpio.ACTIVE_HIGH)

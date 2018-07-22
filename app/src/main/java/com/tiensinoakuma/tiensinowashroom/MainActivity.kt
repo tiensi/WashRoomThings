@@ -4,7 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import com.google.android.things.pio.Gpio
-import com.google.android.things.pio.PeripheralManagerService
+import com.google.android.things.pio.PeripheralManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -12,23 +12,22 @@ import java.io.IOException
 
 class MainActivity : View, Activity() {
 
-    lateinit var service: PeripheralManagerService
-    val switchManager: SwitchManager = SwitchManager()
-    lateinit var presenter: Presenter
-    val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private lateinit var service: PeripheralManager
+    private val switchManager: SwitchManager = SwitchManager()
+    private lateinit var presenter: Presenter
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     lateinit var redSwitch: Gpio
     lateinit var greenSwitch: Gpio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        service = PeripheralManagerService()
+        service = PeripheralManager.getInstance()
         val firstSwitch = Switch("Switch_1", service.openGpio("GPIO2_IO07"))
         switchManager.addSwitch(firstSwitch)
         switchManager.setCallbacks({ change ->
             run {
                 presenter.onSwitchChanged(change)
-                Log.d("but what", "why")
             }
         })
         presenter = Presenter(WashRoomApiClient, this)
@@ -44,6 +43,7 @@ class MainActivity : View, Activity() {
         switchManager.onDestroy()
         greenSwitch.close()
         redSwitch.close()
+        presenter.onDestroy()
         super.onDestroy()
     }
 
@@ -58,12 +58,11 @@ class MainActivity : View, Activity() {
     }
 
     override fun setRoomAvailable(available: Boolean) {
-        Log.d("vacant ", available.toString())
         try {
             greenSwitch.value = available
             redSwitch.value = !available
         } catch (e: IOException) {
-            Log.e("hi", "Error updating GPIO value", e)
+            Log.e("Error", "Error updating GPIO value", e)
         }
 
     }
